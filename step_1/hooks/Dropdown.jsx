@@ -3,9 +3,12 @@ import styled from 'styled-components';
 import { ArrowDownShort } from '@styled-icons/bootstrap/ArrowDownShort';
 
 const DropdownContainer = styled.div`
-  /* div > ul > li:first-child {
-
-  } */
+  #select {
+    display: flex;
+    span:last-child {
+      margin-left: auto;
+    }
+  }
   width: 60vw;
   margin: 0 auto;
   div > ul > li {
@@ -13,6 +16,7 @@ const DropdownContainer = styled.div`
     padding: 0.5rem 0.5rem;
     margin: 0rem 0;
   }
+
   .items {
     border: 1px solid black;
     border-bottom: none;
@@ -61,8 +65,10 @@ export const Dropdown = ({ input }) => {
       <div>
         <ul id='Dropdown' onClick={select}>
           <li id='select'>
-            {chosen === '' ? '선택해주세요.' : chosen}
-            <ArrowDownShort size='18' />
+            <span>{chosen === '' ? '선택해주세요.' : chosen}</span>
+            <span>
+              <ArrowDownShort size='18' />
+            </span>
           </li>
           <div id='list'>
             {isDown &&
@@ -83,29 +89,3 @@ export const Dropdown = ({ input }) => {
     </DropdownContainer>
   );
 };
-
-// <div className='chosen' onClick={clickChosen}>
-//   <span id='item'>{chosen === '' ? '선택해주세요' : chosen}</span>
-//   <span id='price'> {chosen && price}</span>
-//   <span>
-//     <ArrowDownShort size='18' />
-//   </span>
-// </div>
-// <ul onClick={choice}>
-//   {isDowned
-//     ? arrayInput.map((value, index) => (
-//         <li key={value + index}>
-//           {value.match(reg) === null ? (
-//             <span className='item'>
-//               <div>{value}</div>
-//             </span>
-//           ) : (
-//             <div className='item'>
-//               <div>{value.slice(0, value.match(reg).index)}</div>
-//               <div id='price'>{value.match(reg)[0]}</div>
-//             </div>
-//           )}
-//         </li>
-//       ))
-//     : null}
-// </ul>
