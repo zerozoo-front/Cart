@@ -8,6 +8,8 @@ import {
   setSecondsLoop,
   selectCheckCounter,
   selectCartListCount,
+  setCheckCounter,
+  selectSecondsLoop,
 } from '../../store/counterReducer';
 
 const StyledContainer = styled.div``;
@@ -32,23 +34,54 @@ export default function OrderList() {
   const [totalChecker, setTotalChecker] = useState(true);
   const dispatch = useDispatch();
   const checkCount = useSelector(selectCheckCounter);
+  const cartListLength = useSelector(selectCartListCount);
+  const secondsLoop = useSelector(selectSecondsLoop);
 
   const numberCommaInjector = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
-  const checkOnChange = () => {
-    setTotalChecker(!totalChecker);
-    dispatch(setSecondsLoop());
-  };
-  //   cartLists.length 의존성 제거
-  //   checkCount===check되어 있는 수
+  // redux  //
+  // --- redux checkCounter --- //
   useEffect(() => {
-    if (checkCount === cartLists.length) {
-      setTotalChecker(true);
-    } else {
+    dispatch(setCheckCounter(cartListLength));
+  }, []);
+  // 새로 load 되는 경우 checker count = data.length
+  // rules 1. totalChecker ? 전체 체크 : 각자
+
+  // check 중 하나가 해제되면 전체 check 해제
+  useEffect(() => {
+    if (checkCount !== cartListLength) {
       setTotalChecker(false);
+    } else if (checkCount === cartListLength) {
+      setTotalChecker(true);
     }
   }, [checkCount]);
+  //
+
+  // totalChecks onChange
+  const onChange = () => {
+    dispatch(setSecondsLoop());
+    setTotalChecker(!totalChecker);
+  };
+  useEffect(() => {
+    if (!secondsLoop) return;
+    if (totalChecker) {
+      dispatch(setCheckCounter(cartListLength));
+    }
+    if (!totalChecker) {
+      dispatch(setCheckCounter(0));
+    }
+  }, [totalChecker]);
+  // totalChecker가 눌리는 경우 length만큼의 길이를 다시 checker로 업데이트
+  // false가 된 경우 0
+
+  // === redux checkCounter === //
+  // redux secondsLoop //
+  // totalChecker swap
+
+  // redux secondsLoop //
+  // redux  //
+
   return (
     <StyledContainer>
       <StyledTable>
@@ -61,7 +94,7 @@ export default function OrderList() {
               <input
                 type='checkbox'
                 checked={totalChecker}
-                onChange={checkOnChange}
+                onChange={onChange}
                 name='all'
               />
               전체
@@ -74,13 +107,10 @@ export default function OrderList() {
               <td
                 children={
                   <List
-                    totalChecker={totalChecker}
-                    setTotalChecker={setTotalChecker}
-                    setTotalCount={setTotalCount}
-                    setTotalPrice={setTotalPrice}
                     data={data}
-                    orderNumber={i + 1}
-                    orderLength={cartLists.length}
+                    totalChecker={totalChecker}
+                    setTotalPrice={setTotalPrice}
+                    setTotalCount={setTotalCount}
                   />
                 }
               />
@@ -112,3 +142,21 @@ export default function OrderList() {
     </StyledContainer>
   );
 }
+
+//     totalChecker={totalChecker}
+//     setTotalChecker={setTotalChecker}
+//     setTotalCount={setTotalCount}
+//     setTotalPrice={setTotalPrice}
+//     data={data}
+//     orderNumber={i + 1}
+//     orderLength={cartLists.length}
+
+//   cartLists.length 의존성 제거
+//   checkCount===check되어 있는 수
+//   useEffect(() => {
+//     if (checkCount === cartListLength) {
+//       setTotalChecker(true);
+//     } else {
+//       setTotalChecker(false);
+//     }
+//   }, [checkCount]);

@@ -26,17 +26,17 @@ export default memo(function Counter({
   const maximum = data.stock;
   const price = data.product_price;
   const isClickedCheckBox = useSelector(selectIsClickedCheckBox);
-  useEffect(() => {
-    if (!checker && isClickedCheckBox) {
-      console.log('price: ', price);
-      console.log('count: ', count);
-      setTotalCount((prev) => prev - count);
-      setTotalPrice((prev) => prev - price * count);
-    } else if (checker && isClickedCheckBox) {
-      setTotalCount((prev) => prev + count);
-      setTotalPrice((prev) => prev + price * count);
-    }
-  }, [checker]);
+  //   useEffect(() => {
+  //     if (!checker && isClickedCheckBox) {
+  //       console.log('price: ', price);
+  //       console.log('count: ', count);
+  //       setTotalCount((prev) => prev - count);
+  //       setTotalPrice((prev) => prev - price * count);
+  //     } else if (checker && isClickedCheckBox) {
+  //       setTotalCount((prev) => prev + count);
+  //       setTotalPrice((prev) => prev + price * count);
+  //     }
+  //   }, [checker]);
   useEffect(() => {
     setCount(minimum);
     setTotalCount((prev) => prev + minimum);
@@ -58,12 +58,12 @@ export default memo(function Counter({
 
   return (
     <CounterContainer>
-      <div onClick={plus}>
-        <PatchPlus size='22' />
+      <div>
+        <PatchPlus onClick={plus} size='22' />
       </div>
       <div>{count}</div>
-      <div onClick={minus}>
-        <PatchMinus size='22' />
+      <div>
+        <PatchMinus onClick={minus} size='22' />
       </div>
     </CounterContainer>
   );

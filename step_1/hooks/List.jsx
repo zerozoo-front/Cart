@@ -8,6 +8,7 @@ import {
   setCheckCounter,
   selectCheckCounter,
   selectSecondsLoop,
+  selectCartListCount,
   setIsClickedCheckBox,
 } from '../../store/counterReducer';
 
@@ -19,75 +20,62 @@ const ListContainer = styled.div`
   }
 `;
 
-const List = ({
-  totalChecker,
-  setTotalChecker,
-  setTotalCount,
-  data,
-  setTotalPrice,
-  orderNumber,
-  orderLength,
-}) => {
+const List = ({ data, setTotalCount, setTotalPrice, totalChecker }) => {
   const [count, setCount] = useState(0);
   const [isDeleted, setIsDeleted] = useState(false);
   const [checker, setChecker] = useState(false);
+  const [isOnChanged, setIsOnChanged] = useState(false);
   const dispatch = useDispatch();
   const checkCount = useSelector(selectCheckCounter);
-  const secondsLoop = useSelector(selectSecondsLoop);
 
-  const deleteList = () => {
-    setTotalCount((prev) => prev - count);
-    setTotalPrice((prev) => prev - data.product_price * count);
-    dispatch(setCheckCounter(checkCount - 1));
-    setIsDeleted(true);
-  };
   const onChange = (e) => {
     let isChecked = e.target.checked;
+    setIsOnChanged(true);
     setChecker(!checker);
     dispatch(setIsClickedCheckBox());
     isChecked
       ? dispatch(setCheckCounter(checkCount + 1))
       : dispatch(setCheckCounter(checkCount - 1));
   };
+  //   useEffect(() => {
+  //     if (!isOnChanged) return;
+  //     console.log('checker', checker);
+  //     if (checker) {
+  //       dispatch(setCheckCounter(checkCount + 1));
+  //     } else if (!checker) {
+  //       dispatch(setCheckCounter(checkCount - 1));
+  //     }
+  //   }, [checker]);
+  // 초기 checkbox 활성화
 
+  // react total checker
   useEffect(() => {
-    console.log('checkCount: ', checkCount);
-    console.log('orderNumber: ', orderNumber);
-    dispatch(setCheckCounter(checkCount + orderNumber));
-    setChecker(true);
-  }, []);
-
-  useEffect(() => {
-    if (totalChecker === true && secondsLoop) {
+    if (totalChecker) {
       setChecker(true);
-      console.log('total checker in');
-      dispatch(setCheckCounter(checkCount + orderNumber));
-      setTotalCount(orderNumber);
-    } else if (
-      totalChecker === false &&
-      checkCount === orderLength &&
-      secondsLoop
-    ) {
-      console.log('total checker out');
-      setChecker(false);
-      setTotalCount(0);
-      if (checkCount === 0) return;
-      dispatch(setCheckCounter(0));
     }
   }, [totalChecker]);
+  useEffect(() => {
+    if (checkCount === 0) {
+      setChecker(false);
+    }
+  }, [checkCount]);
 
   return (
     <>
       {!isDeleted ? (
         <ListContainer>
-          <input type='checkbox' checked={checker} name={data.id + 'chkBox'} />
+          <input
+            onChange={onChange}
+            checked={checker}
+            type='checkbox'
+            name={data.id + 'chkBox'}
+          />
           <Counter
-            checker={checker}
             data={data}
             count={count}
+            setTotalPrice={setTotalPrice}
             setTotalCount={setTotalCount}
             setCount={setCount}
-            setTotalPrice={setTotalPrice}
           />
           <Cancel id='Cancel' size='25' />
         </ListContainer>
@@ -96,3 +84,10 @@ const List = ({
   );
 };
 export default memo(List);
+
+//     checker={checker}
+//     data={data}
+//     count={count}
+//     setTotalCount={setTotalCount}
+//     setCount={setCount}
+//     setTotalPrice={setTotalPrice}
