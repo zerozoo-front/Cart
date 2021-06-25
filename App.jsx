@@ -7,6 +7,7 @@ import theme from './theme';
 import Counter from './step_1/hooks/Counter';
 import { Provider } from 'react-redux';
 import store from './store/store';
+import OrderList from './step_1/hooks/OrderList';
 
 const GlobalStyle = createGlobalStyle`
 *{
@@ -23,9 +24,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <GlobalStyle />
-        <Dropdown input={deliveryTypes} />
-
-        <Counter />
+        <OrderList />
       </Provider>
     </ThemeProvider>
   );

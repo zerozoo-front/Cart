@@ -1,35 +1,45 @@
-import React, { useEffect, useState } from 'react';
-import { cartLists } from '../../data.js';
+import React, { useEffect, memo } from 'react';
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
 import { PatchPlus } from '@styled-icons/bootstrap/PatchPlus';
 import { PatchMinus } from '@styled-icons/bootstrap/PatchMinus';
-import { selectCounter, setCounter } from '../../store/counterReducer';
 
 const CounterContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 10rem;
+  align-items: center;
   div {
     margin: 0 1rem;
   }
 `;
 
-export default function Counter({ input }) {
-  const count = useSelector(selectCounter);
-  const minimum = cartLists[0].current_count;
-  const maximum = cartLists[0].stock;
-  const dispatch = useDispatch();
+export default memo(function Counter({
+  setTotalPrice,
+  setTotalCount,
+  count,
+  setCount,
+  data,
+}) {
+  const minimum = data.current_count;
+  const maximum = data.stock;
+  const price = data.product_price;
+
   useEffect(() => {
-    dispatch(setCounter(cartLists[0].current_count));
+    setCount(minimum);
+    setTotalCount((prev) => prev + minimum);
+    setTotalPrice((prev) => prev + price);
   }, []);
+
   const plus = () => {
-    if (maximum === count) return;
-    dispatch(setCounter(count + 1));
+    if (count === maximum) return;
+    setCount((prev) => prev + 1);
+    setTotalCount((prev) => prev + 1);
+    setTotalPrice((prev) => prev + price);
   };
   const minus = () => {
     if (count === minimum) return;
-    dispatch(setCounter(count - 1));
+    setCount((prev) => prev - 1);
+    setTotalCount((prev) => prev - 1);
+    setTotalPrice((prev) => prev - price);
   };
 
   return (
@@ -43,4 +53,4 @@ export default function Counter({ input }) {
       </div>
     </CounterContainer>
   );
-}
+});
