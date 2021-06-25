@@ -4,7 +4,11 @@ import List from './List';
 import { cartLists } from '../../data.js';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { setSecondsLoop, selectCheckCounter } from '../../store/counterReducer';
+import {
+  setSecondsLoop,
+  selectCheckCounter,
+  selectCartListCount,
+} from '../../store/counterReducer';
 
 const StyledContainer = styled.div``;
 const StyledTable = styled.table`
@@ -17,7 +21,7 @@ const StyledTable = styled.table`
     }
     td {
       width: 20rem;
-      height: 5rem;
+      line-height: 5rem;
     }
   }
 `;
@@ -36,6 +40,8 @@ export default function OrderList() {
     setTotalChecker(!totalChecker);
     dispatch(setSecondsLoop());
   };
+  //   cartLists.length 의존성 제거
+  //   checkCount===check되어 있는 수
   useEffect(() => {
     if (checkCount === cartLists.length) {
       setTotalChecker(true);

@@ -26,11 +26,6 @@ export default memo(function Counter({
   const maximum = data.stock;
   const price = data.product_price;
   const isClickedCheckBox = useSelector(selectIsClickedCheckBox);
-
-  // checker = false 라면 count - price * counter
-  // && totalCount-count
-  // true라면 totalCount+count
-  //
   useEffect(() => {
     if (!checker && isClickedCheckBox) {
       console.log('price: ', price);
