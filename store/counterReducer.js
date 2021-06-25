@@ -1,20 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  totalCount: 1,
+  checkCount: 0,
+  secondsLoop: false,
 };
 export const counterSlice = createSlice({
   name: 'counter',
   initialState,
   reducers: {
-    setTotalCounter: (state, action) => {
-      state.totalCount = action.payload;
+    setCheckCounter: (state, action) => {
+      state.checkCount = action.payload;
+    },
+    setSecondsLoop: (state) => {
+      state.secondsLoop = true;
     },
   },
   extraReducers: {},
 });
 
-export const { setTotalCounter } = counterSlice.actions;
-export const selectTotalCounter = (state) => state.counter.totalCount;
-
+export const { setCheckCounter } = counterSlice.actions;
+export const selectCheckCounter = (state) => state.counter.checkCount;
 export default counterSlice.reducer;
+
+export const { setSecondsLoop } = counterSlice.actions;
+export const selectSecondsLoop = (state) => state.counter.secondsLoop;
