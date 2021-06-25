@@ -8,6 +8,7 @@ import {
   setCheckCounter,
   selectCheckCounter,
   selectSecondsLoop,
+  setIsClickedCheckBox,
 } from '../../store/counterReducer';
 
 const ListContainer = styled.div`
@@ -42,6 +43,7 @@ const List = ({
   const onChange = (e) => {
     let isChecked = e.target.checked;
     setChecker(!checker);
+    dispatch(setIsClickedCheckBox());
     isChecked
       ? dispatch(setCheckCounter(checkCount + 1))
       : dispatch(setCheckCounter(checkCount - 1));
@@ -51,6 +53,7 @@ const List = ({
     dispatch(setCheckCounter(checkCount + orderNumber));
     setChecker(true);
   }, []);
+
   useEffect(() => {
     if (totalChecker === true) {
       setChecker(true);
@@ -75,6 +78,7 @@ const List = ({
             name={data.id + 'chkBox'}
           />
           <Counter
+            checker={checker}
             data={data}
             count={count}
             setTotalCount={setTotalCount}
