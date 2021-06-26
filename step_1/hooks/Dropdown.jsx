@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNumberToMoney } from './useNumberToMoney';
 import { deliveryTypes } from '../../data';
-import { OrderBtn } from './OrderBtn';
 
 import {
   selectDeliveryWay,

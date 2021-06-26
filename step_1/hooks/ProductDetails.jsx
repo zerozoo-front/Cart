@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { useNumberToMoney } from './useNumberToMoney';
 import { useSelector } from 'react-redux';
 import { selectDelivery } from '../../store/counterReducer';
-import { OrderBtn } from './OrderBtn';
 import { Dropdown } from './Dropdown';
 
 const ProductDetailsTable = styled.table`
@@ -31,20 +30,8 @@ const ProductDetailsTable = styled.table`
     }
   }
 `;
-// order = on일 때 store에서 counter에 접근
-// order on인 경우 store.isOrder on
-// counter에서 isOrder=on인 경우 store dispatch
 export const ProductDetails = ({ setPassOrder, totalCount, totalPrice }) => {
   const deliveryCost = useSelector(selectDelivery);
-  // const onSubmit = (e) => {};
-
-  // <form onSubmit={onSubmit} method='POST'>
-  //   <Dropdown />
-  //   <OrderBtn
-  //     setPassOrder={setPassOrder}
-  //     totalCost={totalPrice + deliveryCost}
-  //   />
-  // </form>
   return (
     <>
       <Dropdown
