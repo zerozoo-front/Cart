@@ -66,6 +66,9 @@ export default memo(function OrderList() {
     } else if (checkCount === cartListLength) {
       setTotalChecker(true);
     }
+    if (checkCount === 0 && secondsLoop) {
+      alert('상품을 선택해주세요');
+    }
   }, [checkCount]);
   const onChange = () => {
     dispatch(setSecondsLoop());
@@ -93,7 +96,6 @@ export default memo(function OrderList() {
               </tr>
             </thead>
           </StyledTable>
-          <Dropdown passOrder={passOrder} setPassOrder={setPassOrder} />
           <Boundary />
           <ProductDetails totalCount={totalCount} totalPrice={totalPrice} />
         </div>
