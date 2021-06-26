@@ -5,10 +5,13 @@ import ProductImage from './ProductImage';
 import ProductNamePrice from './ProductNamePrice';
 import { CancelBtn } from './CancelBtn';
 
+import _, { cloneDeep } from 'lodash';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   setCheckCounter,
   selectCheckCounter,
+  selectProductList,
+  setProductList,
 } from '../../store/counterReducer';
 
 const ListContainer = styled.div`
@@ -20,12 +23,21 @@ const ListContainer = styled.div`
   border: 0.6px solid ${(props) => props.theme.colors.grey200};
 `;
 
-const List = ({ data, setTotalCount, setTotalPrice, totalChecker }) => {
+const List = ({
+  passOrder,
+  data,
+  idx,
+  setTotalCount,
+  setTotalPrice,
+  totalChecker,
+}) => {
   const [count, setCount] = useState(0);
   const [isDeleted, setIsDeleted] = useState(false);
   const [checker, setChecker] = useState(false);
   const dispatch = useDispatch();
   const checkCount = useSelector(selectCheckCounter);
+  const productList = useSelector(selectProductList);
+  let copyProductList = cloneDeep(productList);
 
   const onChange = (e) => {
     let isChecked = e.target.checked;
@@ -33,6 +45,14 @@ const List = ({ data, setTotalCount, setTotalPrice, totalChecker }) => {
     isChecked
       ? dispatch(setCheckCounter(checkCount + 1))
       : dispatch(setCheckCounter(checkCount - 1));
+
+    if (!isChecked) {
+      copyProductList.splice(idx, 1);
+      dispatch(setProductList(copyProductList));
+    } else {
+      copyProductList.splice(idx, 0, data);
+      dispatch(setProductList(copyProductList));
+    }
   };
 
   // react total checker
@@ -59,6 +79,7 @@ const List = ({ data, setTotalCount, setTotalPrice, totalChecker }) => {
           <ProductImage data={data} />
           <ProductNamePrice data={data} />
           <Counter
+            passOrder={passOrder}
             checker={checker}
             data={data}
             count={count}
@@ -67,6 +88,7 @@ const List = ({ data, setTotalCount, setTotalPrice, totalChecker }) => {
             setCount={setCount}
           />
           <CancelBtn
+            idx={idx}
             data={data}
             setTotalCount={setTotalCount}
             setTotalPrice={setTotalPrice}

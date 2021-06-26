@@ -12,6 +12,8 @@ import {
   selectCartListCount,
   setCheckCounter,
   selectSecondsLoop,
+  selectProductList,
+  setProductList,
 } from '../../store/counterReducer';
 
 const StyledTable = styled.table`
@@ -45,12 +47,17 @@ export default memo(function OrderList() {
   const [totalCount, setTotalCount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalChecker, setTotalChecker] = useState(true);
+  const [passOrder, setPassOrder] = useState(false);
+
   const dispatch = useDispatch();
   const checkCount = useSelector(selectCheckCounter);
   const cartListLength = useSelector(selectCartListCount);
   const secondsLoop = useSelector(selectSecondsLoop);
+  const productList = useSelector(selectProductList);
+
   useEffect(() => {
     dispatch(setCheckCounter(cartListLength));
+    dispatch(setProductList(cartLists));
   }, []);
 
   useEffect(() => {
@@ -86,7 +93,7 @@ export default memo(function OrderList() {
               </tr>
             </thead>
           </StyledTable>
-          <Dropdown />
+          <Dropdown passOrder={passOrder} setPassOrder={setPassOrder} />
           <Boundary />
           <ProductDetails totalCount={totalCount} totalPrice={totalPrice} />
         </div>
@@ -110,16 +117,18 @@ export default memo(function OrderList() {
               </tr>
             </thead>
             <tbody id='lists'>
-              {cartLists.map((data, i) => (
+              {cartLists.map((data, idx) => (
                 <tr key={data.id}>
                   <td
-                    id='list'
+                    id={`list${idx}`}
                     children={
                       <List
+                        passOrder={passOrder}
                         data={data}
                         totalChecker={totalChecker}
                         setTotalPrice={setTotalPrice}
                         setTotalCount={setTotalCount}
+                        idx={idx}
                       />
                     }
                   />
@@ -127,29 +136,14 @@ export default memo(function OrderList() {
               ))}
             </tbody>
           </StyledTable>
-          <Dropdown />
           <Boundary />
-          <ProductDetails totalCount={totalCount} totalPrice={totalPrice} />
+          <ProductDetails
+            setPassOrder={setPassOrder}
+            totalCount={totalCount}
+            totalPrice={totalPrice}
+          />
         </div>
       )}
     </div>
   );
 });
-
-//     totalChecker={totalChecker}
-//     setTotalChecker={setTotalChecker}
-//     setTotalCount={setTotalCount}
-//     setTotalPrice={setTotalPrice}
-//     data={data}
-//     orderNumber={i + 1}
-//     orderLength={cartLists.length}
-
-//   cartLists.length 의존성 제거
-//   checkCount===check되어 있는 수
-//   useEffect(() => {
-//     if (checkCount === cartListLength) {
-//       setTotalChecker(true);
-//     } else {
-//       setTotalChecker(false);
-//     }
-//   }, [checkCount]);

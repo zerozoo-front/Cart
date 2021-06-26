@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { useNumberToMoney } from './useNumberToMoney';
 import { useSelector } from 'react-redux';
 import { selectDelivery } from '../../store/counterReducer';
+import { OrderBtn } from './OrderBtn';
+import { Dropdown } from './Dropdown';
 
 const ProductDetailsTable = styled.table`
   border-collapse: separate;
@@ -29,15 +31,27 @@ const ProductDetailsTable = styled.table`
     }
   }
 `;
-export const ProductDetails = ({ totalCount, totalPrice }) => {
+// order = on일 때 store에서 counter에 접근
+// order on인 경우 store.isOrder on
+// counter에서 isOrder=on인 경우 store dispatch
+export const ProductDetails = ({ setPassOrder, totalCount, totalPrice }) => {
   const deliveryCost = useSelector(selectDelivery);
-  console.log('total', totalPrice);
-  console.log('delivery', deliveryCost);
-  const order = () => {
-    console.log('order');
-  };
+  // const onSubmit = (e) => {};
+
+  // <form onSubmit={onSubmit} method='POST'>
+  //   <Dropdown />
+  //   <OrderBtn
+  //     setPassOrder={setPassOrder}
+  //     totalCost={totalPrice + deliveryCost}
+  //   />
+  // </form>
   return (
     <>
+      <Dropdown
+        totalCount={totalCount}
+        totalPrice={totalPrice}
+        setPassOrder={setPassOrder}
+      />
       <ProductDetailsTable>
         <thead>
           <tr>
@@ -59,13 +73,10 @@ export const ProductDetails = ({ totalCount, totalPrice }) => {
             <td>{useNumberToMoney(totalPrice + deliveryCost)} 원</td>
           </tr>
           <tr>
-            <td>
-              <h2 onClick={order}>order</h2>
-            </td>
+            <td></td>
           </tr>
         </tbody>
       </ProductDetailsTable>
     </>
   );
 };
-// totalPrice
