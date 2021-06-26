@@ -1,13 +1,10 @@
 import React from 'react';
-import { Dropdown } from './step_1/hooks/Dropdown';
 import { ThemeProvider } from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
-import { deliveryTypes } from './data';
 import theme from './theme';
-import Counter from './step_1/hooks/Counter';
 import { Provider } from 'react-redux';
 import store from './store/store';
-import OrderList from './step_1/hooks/OrderList';
+import { Nav } from './step_2/Nav';
 
 const GlobalStyle = createGlobalStyle`
 *{
@@ -24,7 +21,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <GlobalStyle />
-        <OrderList />
+        <Nav />
       </Provider>
     </ThemeProvider>
   );

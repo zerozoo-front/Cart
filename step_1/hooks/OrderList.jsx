@@ -40,15 +40,10 @@ export default memo(function OrderList() {
   const numberCommaInjector = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
-  // redux  //
-  // --- redux checkCounter --- //
   useEffect(() => {
     dispatch(setCheckCounter(cartListLength));
   }, []);
-  // 새로 load 되는 경우 checker count = data.length
-  // rules 1. totalChecker ? 전체 체크 : 각자
 
-  // check 중 하나가 해제되면 전체 check 해제
   useEffect(() => {
     if (checkCount !== cartListLength) {
       setTotalChecker(false);
@@ -56,9 +51,6 @@ export default memo(function OrderList() {
       setTotalChecker(true);
     }
   }, [checkCount]);
-  //
-
-  // totalChecks onChange
   const onChange = () => {
     dispatch(setSecondsLoop());
     setTotalChecker(!totalChecker);
@@ -72,16 +64,6 @@ export default memo(function OrderList() {
       dispatch(setCheckCounter(0));
     }
   }, [totalChecker]);
-  // totalChecker가 눌리는 경우 length만큼의 길이를 다시 checker로 업데이트
-  // false가 된 경우 0
-
-  // === redux checkCounter === //
-  // redux secondsLoop //
-  // totalChecker swap
-
-  // redux secondsLoop //
-  // redux  //
-
   return (
     <StyledContainer>
       <StyledTable>

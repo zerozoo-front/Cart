@@ -2,8 +2,6 @@ import React, { useEffect, memo } from 'react';
 import styled from 'styled-components';
 import { PatchPlus } from '@styled-icons/bootstrap/PatchPlus';
 import { PatchMinus } from '@styled-icons/bootstrap/PatchMinus';
-import { useSelector } from 'react-redux';
-import { selectIsClickedCheckBox } from '../../store/counterReducer';
 
 const CounterContainer = styled.div`
   display: flex;
@@ -25,7 +23,6 @@ export default memo(function Counter({
   const minimum = data.current_count;
   const maximum = data.stock;
   const price = data.product_price;
-  const isClickedCheckBox = useSelector(selectIsClickedCheckBox);
   useEffect(() => {
     setCount(minimum);
     setTotalCount((prev) => prev + minimum);
