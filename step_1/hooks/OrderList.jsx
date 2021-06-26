@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import styled from 'styled-components';
 import List from './List';
 import { cartLists } from '../../data.js';
@@ -28,7 +28,7 @@ const StyledTable = styled.table`
   }
 `;
 
-export default function OrderList() {
+export default memo(function OrderList() {
   const [totalCount, setTotalCount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalChecker, setTotalChecker] = useState(true);
@@ -117,10 +117,6 @@ export default function OrderList() {
             </tr>
           ))}
         </tbody>
-        <colgroup>
-          <col />
-          <col />
-        </colgroup>
         <thead>
           <tr>
             <th>상품 내역</th>
@@ -141,7 +137,7 @@ export default function OrderList() {
       </StyledTable>
     </StyledContainer>
   );
-}
+});
 
 //     totalChecker={totalChecker}
 //     setTotalChecker={setTotalChecker}

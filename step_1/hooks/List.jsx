@@ -38,16 +38,6 @@ const List = ({ data, setTotalCount, setTotalPrice, totalChecker }) => {
       ? dispatch(setCheckCounter(checkCount + 1))
       : dispatch(setCheckCounter(checkCount - 1));
   };
-  //   useEffect(() => {
-  //     if (!isOnChanged) return;
-  //     console.log('checker', checker);
-  //     if (checker) {
-  //       dispatch(setCheckCounter(checkCount + 1));
-  //     } else if (!checker) {
-  //       dispatch(setCheckCounter(checkCount - 1));
-  //     }
-  //   }, [checker]);
-  // 초기 checkbox 활성화
 
   // react total checker
   useEffect(() => {
@@ -71,6 +61,7 @@ const List = ({ data, setTotalCount, setTotalPrice, totalChecker }) => {
             name={data.id + 'chkBox'}
           />
           <Counter
+            checker={checker}
             data={data}
             count={count}
             setTotalPrice={setTotalPrice}

@@ -26,22 +26,20 @@ export default memo(function Counter({
   const maximum = data.stock;
   const price = data.product_price;
   const isClickedCheckBox = useSelector(selectIsClickedCheckBox);
-  //   useEffect(() => {
-  //     if (!checker && isClickedCheckBox) {
-  //       console.log('price: ', price);
-  //       console.log('count: ', count);
-  //       setTotalCount((prev) => prev - count);
-  //       setTotalPrice((prev) => prev - price * count);
-  //     } else if (checker && isClickedCheckBox) {
-  //       setTotalCount((prev) => prev + count);
-  //       setTotalPrice((prev) => prev + price * count);
-  //     }
-  //   }, [checker]);
   useEffect(() => {
     setCount(minimum);
     setTotalCount((prev) => prev + minimum);
     setTotalPrice((prev) => prev + price);
   }, []);
+  useEffect(() => {
+    if (!checker) {
+      setTotalCount((prev) => prev - 1);
+      setTotalPrice((prev) => prev - price);
+    } else {
+      setTotalCount((prev) => prev + 1);
+      setTotalPrice((prev) => prev + price);
+    }
+  }, [checker]);
 
   const plus = () => {
     if (count === maximum) return;
