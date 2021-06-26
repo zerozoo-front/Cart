@@ -1,8 +1,9 @@
 import React, { useState, memo, useEffect } from 'react';
 import Counter from './Counter';
-import { Cancel } from '@styled-icons/material-outlined/Cancel';
 import styled from 'styled-components';
 import ProductImage from './ProductImage';
+import ProductNamePrice from './ProductNamePrice';
+import { CancelBtn } from './CancelBtn';
 
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -14,13 +15,12 @@ import {
 } from '../../store/counterReducer';
 
 const ListContainer = styled.div`
-  display: flex;
-  height: 8rem;
-  align-items: center;
-  justify-content: center;
-  #Cancel {
-    margin-left: auto;
-  }
+  display: grid;
+  grid-template-columns: 0.1fr 0.2fr minmax(15rem, auto) 0.2fr 0.1fr;
+  place-items: center;
+  column-gap: 0.3rem;
+  padding: 1rem;
+  border: 0.6px solid ${(props) => props.theme.colors.grey200};
 `;
 
 const List = ({ data, setTotalCount, setTotalPrice, totalChecker }) => {
@@ -61,6 +61,7 @@ const List = ({ data, setTotalCount, setTotalPrice, totalChecker }) => {
             name={data.id + 'chkBox'}
           />
           <ProductImage data={data} />
+          <ProductNamePrice data={data} />
           <Counter
             checker={checker}
             data={data}
@@ -69,17 +70,15 @@ const List = ({ data, setTotalCount, setTotalPrice, totalChecker }) => {
             setTotalCount={setTotalCount}
             setCount={setCount}
           />
-          <Cancel id='Cancel' size='25' />
+          <CancelBtn
+            data={data}
+            setTotalCount={setTotalCount}
+            setTotalPrice={setTotalPrice}
+            setCount={setCount}
+          />
         </ListContainer>
       ) : null}
     </>
   );
 };
 export default memo(List);
-
-//     checker={checker}
-//     data={data}
-//     count={count}
-//     setTotalCount={setTotalCount}
-//     setCount={setCount}
-//     setTotalPrice={setTotalPrice}

@@ -75,6 +75,8 @@ const colors = {
   orange500: '#ff9800',
   grey50: '#fafafa',
   grey100: '#f5f5f5',
+  grey200: '#eeeeee',
+  grey400: '#bdbdbd',
   grey500: '#9e9e9e',
   pointColor: 'rgb(101,151,227)',
   deepDarkBackgroundColor: 'rgb(10,15,20)',

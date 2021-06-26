@@ -2,6 +2,7 @@ import React, { useState, useEffect, memo } from 'react';
 import styled from 'styled-components';
 import List from './List';
 import { cartLists } from '../../data.js';
+import { ProductDetails } from './ProductDetails';
 
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -12,18 +13,17 @@ import {
   selectSecondsLoop,
 } from '../../store/counterReducer';
 
-const StyledContainer = styled.div``;
 const StyledTable = styled.table`
   border-collapse: separate;
   border-spacing: 1rem 1rem;
   outline: 1px solid red;
+  #totalChecker {
+    text-align: left;
+    padding-left: 1rem;
+  }
   #lists {
     tr:nth-of-type(odd) {
       background-color: #efefef;
-    }
-    td {
-      width: 20rem;
-      line-height: 5rem;
     }
   }
 `;
@@ -36,10 +36,6 @@ export default memo(function OrderList() {
   const checkCount = useSelector(selectCheckCounter);
   const cartListLength = useSelector(selectCartListCount);
   const secondsLoop = useSelector(selectSecondsLoop);
-
-  const numberCommaInjector = (price) => {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  };
   useEffect(() => {
     dispatch(setCheckCounter(cartListLength));
   }, []);
@@ -65,14 +61,14 @@ export default memo(function OrderList() {
     }
   }, [totalChecker]);
   return (
-    <StyledContainer>
+    <div>
       <StyledTable>
         <thead>
           <tr>
             <th>상품 내역</th>
           </tr>
           <tr>
-            <th>
+            <th id='totalChecker'>
               <input
                 type='checkbox'
                 checked={totalChecker}
@@ -87,6 +83,7 @@ export default memo(function OrderList() {
           {cartLists.map((data, i) => (
             <tr key={data.id}>
               <td
+                id='list'
                 children={
                   <List
                     data={data}
@@ -99,25 +96,10 @@ export default memo(function OrderList() {
             </tr>
           ))}
         </tbody>
-        <thead>
-          <tr>
-            <th>상품 내역</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <span>총 상품 수량</span>
-              <span>{totalCount}</span>
-            </td>
-            <td>
-              <span>총 상품 금액</span>
-              <span>{numberCommaInjector(totalPrice)}원</span>
-            </td>
-          </tr>
-        </tbody>
+
+        <ProductDetails totalCount={totalCount} totalPrice={totalPrice} />
       </StyledTable>
-    </StyledContainer>
+    </div>
   );
 });
 
