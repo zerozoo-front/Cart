@@ -9,9 +9,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   setCheckCounter,
   selectCheckCounter,
-  selectSecondsLoop,
-  selectCartListCount,
-  setIsClickedCheckBox,
 } from '../../store/counterReducer';
 
 const ListContainer = styled.div`
@@ -33,7 +30,6 @@ const List = ({ data, setTotalCount, setTotalPrice, totalChecker }) => {
   const onChange = (e) => {
     let isChecked = e.target.checked;
     setChecker(!checker);
-    dispatch(setIsClickedCheckBox());
     isChecked
       ? dispatch(setCheckCounter(checkCount + 1))
       : dispatch(setCheckCounter(checkCount - 1));

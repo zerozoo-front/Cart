@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
 
 import { Cancel } from '@styled-icons/material-outlined/Cancel';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,6 +8,7 @@ import {
   selectCartListCount,
   setCartListCount,
 } from '../../store/counterReducer';
+import styled from 'styled-components';
 
 // checkCount minus
 // setCount minus
@@ -15,6 +16,9 @@ import {
 // setTotalCount, setTotalPrice -
 // needs data
 
+const CancelContainer = styled.div`
+  outline: 1px solid red;
+`;
 export const CancelBtn = memo(
   ({ data, setTotalCount, setTotalPrice, setCount }) => {
     const dispatch = useDispatch();
@@ -25,15 +29,16 @@ export const CancelBtn = memo(
       dispatch(setCartListCount(cartListCount - 1));
       dispatch(setCheckCounter(checkCount - 1));
       setTotalCount((prev) => prev - 1);
+
       setTotalPrice((prev) => prev - data.product_price);
       const parentNode = document.getElementById('list');
       parentNode.remove();
     };
 
     return (
-      <>
+      <CancelContainer>
         <Cancel onClick={onClick} size='25' />
-      </>
+      </CancelContainer>
     );
   }
 );

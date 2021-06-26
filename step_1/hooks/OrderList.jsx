@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import List from './List';
 import { cartLists } from '../../data.js';
 import { ProductDetails } from './ProductDetails';
+import { Dropdown } from './Dropdown';
 
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -16,7 +17,9 @@ import {
 const StyledTable = styled.table`
   border-collapse: separate;
   border-spacing: 1rem 1rem;
-  outline: 1px solid red;
+  #emptyCart {
+    text-align: center;
+  }
   #totalChecker {
     text-align: left;
     padding-left: 1rem;
@@ -26,6 +29,16 @@ const StyledTable = styled.table`
       background-color: #efefef;
     }
   }
+
+  #lastBorder {
+    padding-bottom: 1.8rem;
+    border-bottom: 1px solid ${(props) => props.theme.colors.grey400};
+  }
+`;
+const Boundary = styled.div`
+  margin: 2rem 1rem;
+  width: 36.5rem;
+  border-top: 1px solid ${(props) => props.theme.colors.grey400};
 `;
 
 export default memo(function OrderList() {
@@ -62,43 +75,63 @@ export default memo(function OrderList() {
   }, [totalChecker]);
   return (
     <div>
-      <StyledTable>
-        <thead>
-          <tr>
-            <th>상품 내역</th>
-          </tr>
-          <tr>
-            <th id='totalChecker'>
-              <input
-                type='checkbox'
-                checked={totalChecker}
-                onChange={onChange}
-                name='all'
-              />
-              전체
-            </th>
-          </tr>
-        </thead>
-        <tbody id='lists'>
-          {cartLists.map((data, i) => (
-            <tr key={data.id}>
-              <td
-                id='list'
-                children={
-                  <List
-                    data={data}
-                    totalChecker={totalChecker}
-                    setTotalPrice={setTotalPrice}
-                    setTotalCount={setTotalCount}
+      {cartListLength === 0 ? (
+        <div>
+          <StyledTable>
+            <thead>
+              <tr id='emptyCart'>
+                <td>
+                  <h2>선택하신 물건이 없습니다. 🌹</h2>
+                </td>
+              </tr>
+            </thead>
+          </StyledTable>
+          <Dropdown />
+          <Boundary />
+          <ProductDetails totalCount={totalCount} totalPrice={totalPrice} />
+        </div>
+      ) : (
+        <div>
+          <StyledTable>
+            <thead>
+              <tr>
+                <th>상품 내역</th>
+              </tr>
+              <tr>
+                <th id='totalChecker'>
+                  <input
+                    type='checkbox'
+                    checked={totalChecker}
+                    onChange={onChange}
+                    name='all'
                   />
-                }
-              />
-            </tr>
-          ))}
-        </tbody>
-
-        <ProductDetails totalCount={totalCount} totalPrice={totalPrice} />
-      </StyledTable>
+                  전체
+                </th>
+              </tr>
+            </thead>
+            <tbody id='lists'>
+              {cartLists.map((data, i) => (
+                <tr key={data.id}>
+                  <td
+                    id='list'
+                    children={
+                      <List
+                        data={data}
+                        totalChecker={totalChecker}
+                        setTotalPrice={setTotalPrice}
+                        setTotalCount={setTotalCount}
+                      />
+                    }
+                  />
+                </tr>
+              ))}
+            </tbody>
+          </StyledTable>
+          <Dropdown />
+          <Boundary />
+          <ProductDetails totalCount={totalCount} totalPrice={totalPrice} />
+        </div>
+      )}
     </div>
   );
 });

@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { ArrowDownShort } from '@styled-icons/bootstrap/ArrowDownShort';
+import { useNumberToMoney } from './useNumberToMoney';
+import { deliveryTypes } from '../../data';
+
+import { useDispatch } from 'react-redux';
+import { setDelivery } from '../../store/counterReducer';
 
 const DropdownContainer = styled.div`
   #select {
@@ -10,7 +15,7 @@ const DropdownContainer = styled.div`
     }
   }
   width: 60vw;
-  margin: 0 auto;
+  margin-left: 1rem;
   div > ul > li {
     border: 1px solid black;
     padding: 0.5rem 0.5rem;
@@ -37,9 +42,10 @@ const DropdownContainer = styled.div`
   }
 `;
 
-export const Dropdown = ({ input }) => {
+export const Dropdown = () => {
   const [isDown, setIsDown] = useState(false);
   const [chosen, setChosen] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!isDown) return;
@@ -53,11 +59,12 @@ export const Dropdown = ({ input }) => {
 
   const select = (e) => {
     setIsDown(!isDown);
-    if (e.target.id === 'select') return;
     if (e.target.className === 'items') {
+      dispatch(setDelivery(e.target.parentNode.dataset.index));
       setChosen(e.target.innerText);
       return;
     }
+    dispatch(setDelivery(e.target.parentNode.dataset.index));
     setChosen(e.target.parentNode.innerText);
   };
   return (
@@ -70,16 +77,13 @@ export const Dropdown = ({ input }) => {
               <ArrowDownShort size='18' />
             </span>
           </li>
-          <div id='list'>
+          <div id='listDelivery'>
             {isDown &&
-              input.map((v) => (
-                <li className='items' key={v.id}>
+              deliveryTypes.map((v, i) => (
+                <li className='items' data-index={i} key={v.id}>
                   <span className='item'>{v.name}</span>
                   <span className='item'>
-                    {v.delivery_price
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                    원
+                    {useNumberToMoney(v.delivery_price)} 원
                   </span>
                 </li>
               ))}
