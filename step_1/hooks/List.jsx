@@ -33,6 +33,7 @@ const List = ({ data, setTotalCount, setTotalPrice, totalChecker }) => {
     setIsOnChanged(true);
     setChecker(!checker);
     dispatch(setIsClickedCheckBox());
+    // 함수가 끝나기 전까지는 setChecker는 적용되지 않음
     isChecked
       ? dispatch(setCheckCounter(checkCount + 1))
       : dispatch(setCheckCounter(checkCount - 1));
@@ -53,12 +54,11 @@ const List = ({ data, setTotalCount, setTotalPrice, totalChecker }) => {
     if (totalChecker) {
       setChecker(true);
     }
-  }, [totalChecker]);
-  useEffect(() => {
-    if (checkCount === 0) {
+    if (checkCount === 4 && !totalChecker) {
       setChecker(false);
     }
-  }, [checkCount]);
+  }, [totalChecker]);
+  // totalChecker=>Checker
 
   return (
     <>

@@ -68,7 +68,7 @@ export default function OrderList() {
     if (totalChecker) {
       dispatch(setCheckCounter(cartListLength));
     }
-    if (!totalChecker) {
+    if (!totalChecker && checkCount === cartListLength) {
       dispatch(setCheckCounter(0));
     }
   }, [totalChecker]);
